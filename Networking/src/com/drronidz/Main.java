@@ -15,7 +15,7 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
         try {
-            URL url = new URL("http://example.org");
+            URL url = new URL("https://www.flickr.com/services/feeds/photos_public.gne?tags=dogs");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", "Chrome");
@@ -26,6 +26,7 @@ public class Main {
 
             if(responseCode != 200) {
                 System.out.println("Error reading web page");
+                System.out.println(connection.getResponseMessage());
                 return;
             }
             BufferedReader inputReader = new BufferedReader(
