@@ -5,22 +5,30 @@ package com.drronidz;/*
     CREATED ON : 3:53 PM
 */
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.*;
 
 public class Main {
     public static void main(String[] args) {
         try {
-//            URI uri = new URI("http://username:password@myserver.com:5000/catalogue/phones?os=android#samsung");
-            URI baseURI = new URI("http://username:password@myserver.com:5000");
-            URI uri = new URI("/catalogue/phones?os=android#samsung");
-            URI resolvedURI = baseURI.resolve(uri);
+            URL url = new URL("http://example.org");
+            URLConnection urlConnection = url.openConnection();
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
 
-            URL url = resolvedURI.toURL();
-            System.out.println("URL = " + url);
-//            URI uri = new URI("hello");
+            BufferedReader inputStream = new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream())
+            );
+
+            String line = "";
+            while (line != null) {
+                line = inputStream.readLine();
+                System.out.println(line);
+            }
+            inputStream.close();
+//            URI uri = url.toURI();
 
 //            System.out.println("Scheme = " + uri.getScheme());
 //            System.out.println("Scheme-specific part = " + uri.getSchemeSpecificPart());
@@ -32,9 +40,44 @@ public class Main {
 //            System.out.println("Query = " + uri.getQuery());
 //            System.out.println("Fragment = " + uri.getFragment());
 
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
+
+//            URI uri = new URI("http://username:password@myserver.com:5000/catalogue/phones?os=android#samsung");
+//            URI baseURI = new URI("http://username:password@mynewserver.com:5000");
+//            URI uriOne = new URI("/catalogue/phones?os=android#samsung");
+//            URI uriTwo = new URI("/catalogue/tvs?manufacturer=samsung");
+//            URI uriThree = new URI("/stores/locations?zip=12345");
+//
+//            URI resolvedURIOne = baseURI.resolve(uriOne);
+//            URI resolvedURITwo = baseURI.resolve(uriTwo);
+//            URI resolvedURIThree = baseURI.resolve(uriThree);
+//
+//
+//            URL urlOne = resolvedURIOne.toURL();
+//            System.out.println("URL = " + urlOne);
+//
+//            URL urlTwo = resolvedURITwo.toURL();
+//            System.out.println("URL = " + urlTwo);
+//
+//            URL urlThree = resolvedURIThree.toURL();
+//            System.out.println("URL = " + urlThree);
+//
+//            URI relativizedURI = baseURI.relativize(resolvedURITwo);
+//            System.out.println("Relative URI = " + relativizedURI);
+//
+//
+////            URI uri = new URI("hello");
+//
+////            System.out.println("Scheme = " + uri.getScheme());
+////            System.out.println("Scheme-specific part = " + uri.getSchemeSpecificPart());
+////            System.out.println("Authority = " + uri.getAuthority());
+////            System.out.println("User info = " + uri.getUserInfo());
+////            System.out.println("Host = " + uri.getHost());
+////            System.out.println("Port = " + uri.getPort());
+////            System.out.println("Path = " + uri.getPath());
+////            System.out.println("Query = " + uri.getQuery());
+////            System.out.println("Fragment = " + uri.getFragment());
+//
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
