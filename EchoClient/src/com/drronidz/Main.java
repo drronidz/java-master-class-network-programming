@@ -10,16 +10,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         try (Socket socket = new Socket("localhost", 5000)) {
+            socket.setSoTimeout(5000);
             BufferedReader echoes = new BufferedReader(
                     new InputStreamReader(socket.getInputStream())
             );
-            PrintWriter stringToEcho = new PrintWriter(socket.getOutputStream(), true);
+            PrintWriter stringToEcho = new PrintWriter(socket.getOutputStream()
+                    , true);
             Scanner scanner = new Scanner(System.in);
             String echoString;
             String response;
@@ -34,7 +37,11 @@ public class Main {
                     System.out.println(response);
                 }
             } while (!echoString.equals("exit"));
-        }  catch (IOException e) {
+
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+            System.out.println("The socket timed out!");
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Client Error: " + e.getMessage());
         }
